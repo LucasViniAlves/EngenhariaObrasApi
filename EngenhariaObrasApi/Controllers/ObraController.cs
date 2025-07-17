@@ -98,6 +98,18 @@ namespace EngenhariaObrasApi.Controllers
                 return NotFound(ex.Message);
             }
         }
+        [HttpPut("{idObra}/materiais/{idMaterial}")]
+        public async Task<IActionResult> AtualizarQuantidadeMaterial(int idObra, int idMaterial, [FromBody] AtualizarQuantidadeDTO dto)
+        {
+            if (dto.Quantidade <= 0)
+                return BadRequest("Quantidade deve ser maior que zero.");
 
+            var atualizado = await _obraService.AtualizarQuantidadeMaterialAsync(idObra, idMaterial, dto.Quantidade);
+
+            if (!atualizado)
+                return NotFound("Associação obra-material não encontrada.");
+
+            return NoContent();
+        }
     }
 }

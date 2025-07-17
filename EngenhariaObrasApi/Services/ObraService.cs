@@ -145,7 +145,16 @@ namespace EngenhariaObrasApi.Services
 
             return totalMateriais + totalMaoDeObra + totalCustosAdicionais;
         }
+        public async Task<bool> AtualizarQuantidadeMaterialAsync(int idObra, int idMaterial, int novaQuantidade)
+        {
+            var associacao = await _context.ObrasMateriais
+                .FirstOrDefaultAsync(om => om.ObraId == idObra && om.MaterialId == idMaterial);
 
+            if (associacao == null) return false;
 
+            associacao.Quantidade = novaQuantidade;
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }
