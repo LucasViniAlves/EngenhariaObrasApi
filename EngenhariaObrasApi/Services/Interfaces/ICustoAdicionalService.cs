@@ -9,5 +9,6 @@ namespace EngenhariaObrasApi.Services.Interfaces
         Task<BDIDTO> CreateAsync(BDICreateDTO dto);
         Task<bool> UpdateAsync(int id, BDICreateDTO dto);
         Task<bool> DeleteAsync(int id);
+        Task<decimal?> CalcularBDIAsync(int idObra);
     }
 }

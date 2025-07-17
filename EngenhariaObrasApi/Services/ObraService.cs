@@ -129,6 +129,23 @@ namespace EngenhariaObrasApi.Services
             await _context.SaveChangesAsync();
             return true;
         }
-        
+        public async Task<decimal> CalcularTotalObraAsync(int idObra)
+        {
+            var obra = await _context.Obras
+                .Include(o => o.ObrasMateriais).ThenInclude(om => om.Material)
+                .Include(o => o.MaoDeObras)
+                .Include(o => o.CustosAdicionais)
+                .FirstOrDefaultAsync(o => o.Id == idObra);
+
+            if (obra == null) throw new Exception("Obra não encontrada");
+
+            var totalMateriais = obra.ObrasMateriais.Sum(m => m.Material.PrecoUnitario * m.Quantidade);
+            var totalMaoDeObra = obra.MaoDeObras.Sum(m => m.ValorHora * m.HorasTrabalhadas);
+            var totalCustosAdicionais = obra.CustosAdicionais.Sum(c => c.Valor);
+
+            return totalMateriais + totalMaoDeObra + totalCustosAdicionais;
+        }
+
+
     }
 }

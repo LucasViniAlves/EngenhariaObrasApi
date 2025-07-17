@@ -57,5 +57,47 @@ namespace EngenhariaObrasApi.Services
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<decimal?> CalcularBDIAsync(int idObra)
+        {
+            var bdi = await _context.BDIs
+                .AsNoTracking()
+                .FirstOrDefaultAsync(b => b.ObraId == idObra);
+
+            if (bdi == null) return null;
+
+            var obra = await _context.Obras
+                .Include(o => o.ObrasMateriais)
+                    .ThenInclude(om => om.Material)
+                .Include(o => o.MaoDeObras)
+                .FirstOrDefaultAsync(o => o.Id == idObra);
+
+            if (obra == null) return null;
+
+            decimal custoMateriais = obra.ObrasMateriais
+                .Sum(om => om.Material.PrecoUnitario * om.Material.Quantidade);
+
+            decimal custoMaoDeObra = obra.MaoDeObras
+                .Sum(m => m.ValorHora * m.HorasTrabalhadas);
+
+            decimal custoDireto = custoMateriais + custoMaoDeObra;
+            if (custoDireto == 0) return 0;
+
+            decimal somaComponentes = 
+                  bdi.AdministracaoCentral
+                + bdi.AdministracaoLocal
+                + bdi.DespesasIndiretas
+                + bdi.DespesaFinanceira
+                + bdi.PosObras
+                + bdi.Risco
+                + bdi.Impostos
+                + bdi.MargemLucro
+                + bdi.Seguro
+                + bdi.ReservaTecnica;
+
+            decimal bdiPercentual = (somaComponentes / custoDireto) * 100;
+
+            return Math.Round(bdiPercentual, 2);
+        }
     }
 }

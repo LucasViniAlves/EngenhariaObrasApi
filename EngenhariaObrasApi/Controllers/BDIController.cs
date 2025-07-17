@@ -2,6 +2,7 @@
 using EngenhariaObrasApi.DTOs;
 using EngenhariaObrasApi.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using EngenhariaObrasApi.Services;
 
 namespace EngenhariaObrasApi.Controllers
 {
@@ -53,6 +54,15 @@ namespace EngenhariaObrasApi.Controllers
             var deleted = await _service.DeleteAsync(id);
             if (!deleted) return NotFound();
             return NoContent();
+        }
+
+        [HttpGet("calcular/{idObra}")]
+        public async Task<IActionResult> CalcularBDI(int idObra)
+        {
+            var resultado = await _service.CalcularBDIAsync(idObra);
+            return resultado == null
+                ? NotFound("BDI ou Obra não encontrada.")
+                : Ok(new { BDI = $"{resultado}%" });
         }
     }
 }

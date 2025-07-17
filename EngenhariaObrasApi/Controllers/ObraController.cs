@@ -85,5 +85,19 @@ namespace EngenhariaObrasApi.Controllers
             return NoContent();
         }
 
+        [HttpGet("{idObra}/total")]
+        public async Task<ActionResult<decimal>> GetTotalObra(int idObra)
+        {
+            try
+            {
+                var total = await _obraService.CalcularTotalObraAsync(idObra);
+                return Ok(total);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
     }
 }

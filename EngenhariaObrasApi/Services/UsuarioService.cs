@@ -70,5 +70,18 @@ namespace EngenhariaObrasApi.Services
                 Email = usuario.Email
             };
         }
+
+        public async Task<List<UsuarioDTO>> GetAllUsuarios()
+        {
+            var usuarios = await _context.Usuarios
+                .AsNoTracking()
+                .Select(u => new UsuarioDTO
+                {
+                    Nome = u.Nome,
+                    Email = u.Email
+                })
+                .ToListAsync();
+            return usuarios;
+        }
     }
 }

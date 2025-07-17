@@ -13,6 +13,7 @@ namespace EngenhariaObrasApi.Services.Interfaces
         Task<IEnumerable<MaterialDTO>> GetMateriaisDaObraAsync(int idObra);
         Task<IEnumerable<MaterialDTO>> GetMateriaisNaoAssociadosAsync(int idObra);
         Task<bool> RemoverMaterialAsync(int idObra, int idMaterial);
+        Task<decimal> CalcularTotalObraAsync(int idObra);
 
     }
 }

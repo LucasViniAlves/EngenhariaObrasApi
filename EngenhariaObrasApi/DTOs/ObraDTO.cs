@@ -10,7 +10,7 @@
         public decimal CustoEstimado { get; set; }
 
         // Relacionamentos
-        public List<MaterialDTO> Materiais { get; set; }
+        public List<ObraMaterialDTO> Materiais { get; set; }
         public List<MaoDeObraDTO> MaoDeObras { get; set; }
         public List<CustoAdicionalDTO> CustosAdicionais { get; set; }
         public BDIDTO BDI { get; set; }

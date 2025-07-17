@@ -8,5 +8,6 @@ namespace EngenhariaObrasApi.Services.Interfaces
         Task<string?> RegistrarAsync(UsuarioRegisterDTO dto);
         Task<string?> LoginAsync(UsuarioLoginDTO dto);
         Task<UsuarioDTO?> GetUsuarioLogadoAsync(string email);
+        Task<List<UsuarioDTO>> GetAllUsuarios();
     }
 }
