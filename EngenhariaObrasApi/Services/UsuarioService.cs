@@ -31,7 +31,8 @@ namespace EngenhariaObrasApi.Services
                 Nome = dto.Nome,
                 Email = dto.Email,
                 SenhaHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dto.Senha)),
-                SenhaSalt = hmac.Key
+                SenhaSalt = hmac.Key,
+                Perfil = dto.Perfil
             };
 
             _context.Usuarios.Add(usuario);
@@ -67,7 +68,8 @@ namespace EngenhariaObrasApi.Services
             return new UsuarioDTO
             {
                 Nome = usuario.Nome,
-                Email = usuario.Email
+                Email = usuario.Email,
+                Perfil = usuario.Perfil
             };
         }
 
@@ -78,10 +80,24 @@ namespace EngenhariaObrasApi.Services
                 .Select(u => new UsuarioDTO
                 {
                     Nome = u.Nome,
-                    Email = u.Email
+                    Email = u.Email,
+                    Perfil = u.Perfil
                 })
                 .ToListAsync();
             return usuarios;
+        }
+
+        public async Task<bool> updateUsuarioById(int id, UsuarioCreateDTO dto)
+        {
+            var entity = await _context.Usuarios.FindAsync(id);
+            if (entity == null) return false;
+
+            entity.Email = dto.Email;
+            entity.Perfil = dto.Perfil;
+            entity.Nome = dto.Nome;
+
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

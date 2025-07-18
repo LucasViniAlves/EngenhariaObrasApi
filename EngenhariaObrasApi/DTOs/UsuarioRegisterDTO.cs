@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using EngenhariaObrasApi.Models.Enums;
 
 namespace EngenhariaObrasApi.DTOs
 {
@@ -12,5 +13,9 @@ namespace EngenhariaObrasApi.DTOs
 
         [Required]
         public string Senha { get; set; }
+
+        [Required]
+        [RegularExpression("Administrador|Gerente|Engenheiro|Cliente|Visitante", ErrorMessage = "Perfil inválido.")]
+        public string Perfil { get; set; } = PerfilConstants.Visitante;
     }
 }

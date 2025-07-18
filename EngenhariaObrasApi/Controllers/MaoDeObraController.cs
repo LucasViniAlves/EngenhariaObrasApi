@@ -17,6 +17,7 @@ namespace EngenhariaObrasApi.Controllers
             _service = service;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MaoDeObraDTO>>> GetAll()
         {
@@ -24,6 +25,7 @@ namespace EngenhariaObrasApi.Controllers
             return Ok(lista);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<MaoDeObraDTO>> GetById(int id)
         {
@@ -32,6 +34,7 @@ namespace EngenhariaObrasApi.Controllers
             return Ok(item);
         }
 
+        [Authorize(Roles = "Proprietario,Colaborador")]
         [HttpPost]
         public async Task<ActionResult<MaoDeObraDTO>> Create(MaoDeObraCreateDTO dto)
         {
@@ -39,6 +42,7 @@ namespace EngenhariaObrasApi.Controllers
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
+        [Authorize(Roles = "Proprietario,Colaborador")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, MaoDeObraCreateDTO dto)
         {
@@ -47,6 +51,7 @@ namespace EngenhariaObrasApi.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Proprietario,Colaborador")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

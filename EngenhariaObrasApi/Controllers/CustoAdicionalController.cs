@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 namespace EngenhariaObrasApi.Controllers
 {
     [ApiController]
-    [Authorize]
     [Route("api/[controller]")]
     public class CustoAdicionalController : ControllerBase
     {
@@ -17,6 +16,7 @@ namespace EngenhariaObrasApi.Controllers
             _service = service;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CustoAdicionalDTO>>> GetAll()
         {
@@ -24,6 +24,7 @@ namespace EngenhariaObrasApi.Controllers
             return Ok(lista);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<CustoAdicionalDTO>> GetById(int id)
         {
@@ -32,6 +33,7 @@ namespace EngenhariaObrasApi.Controllers
             return Ok(item);
         }
 
+        [Authorize(Roles = "Proprietario,Colaborador")]
         [HttpPost]
         public async Task<ActionResult<CustoAdicionalDTO>> Create(CustoAdicionalCreateDTO dto)
         {
@@ -39,6 +41,7 @@ namespace EngenhariaObrasApi.Controllers
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
+        [Authorize(Roles = "Proprietario,Colaborador")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, CustoAdicionalCreateDTO dto)
         {
@@ -47,6 +50,7 @@ namespace EngenhariaObrasApi.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Proprietario,Colaborador")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

@@ -17,6 +17,7 @@ namespace EngenhariaObrasApi.Controllers
             _obraService = obraService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ObraDTO>>> GetAll()
         {
@@ -32,6 +33,7 @@ namespace EngenhariaObrasApi.Controllers
             return Ok(obra);
         }
 
+        [Authorize(Roles = "Proprietario")]
         [HttpPost]
         public async Task<ActionResult<ObraDTO>> Create(ObraCreateDTO dto)
         {
@@ -39,6 +41,7 @@ namespace EngenhariaObrasApi.Controllers
             return CreatedAtAction(nameof(GetById), new { id = novaObra.Id }, novaObra);
         }
 
+        [Authorize(Roles = "Proprietario")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, ObraCreateDTO dto)
         {
@@ -47,6 +50,7 @@ namespace EngenhariaObrasApi.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Proprietario")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -55,6 +59,7 @@ namespace EngenhariaObrasApi.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Proprietario,Colaborador")]
         [HttpPost("{idObra}/associar-material")]
         public async Task<IActionResult> AssociarMaterial(int idObra, [FromBody] ObraMaterialDTO dto)
         {
@@ -63,6 +68,7 @@ namespace EngenhariaObrasApi.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "Proprietario,Colaborador")]
         [HttpGet("{idObra}/materiais")]
         public async Task<ActionResult> GetMateriaisDaObra(int idObra)
         {
@@ -70,6 +76,7 @@ namespace EngenhariaObrasApi.Controllers
             return Ok(materiais);
         }
 
+        [Authorize(Roles = "Proprietario,Colaborador")]
         [HttpGet("{idObra}/materiais-nao-associados")]
         public async Task<ActionResult> GetMateriaisNaoAssociados(int idObra)
         {
@@ -77,6 +84,7 @@ namespace EngenhariaObrasApi.Controllers
             return Ok(materiais);
         }
 
+        [Authorize(Roles = "Proprietario,Colaborador")]
         [HttpDelete("{idObra}/remover-material/{idMaterial}")]
         public async Task<IActionResult> RemoverMaterial(int idObra, int idMaterial)
         {
@@ -85,6 +93,7 @@ namespace EngenhariaObrasApi.Controllers
             return NoContent();
         }
 
+        [AllowAnonymous]
         [HttpGet("{idObra}/total")]
         public async Task<ActionResult<decimal>> GetTotalObra(int idObra)
         {
@@ -98,6 +107,8 @@ namespace EngenhariaObrasApi.Controllers
                 return NotFound(ex.Message);
             }
         }
+
+        [Authorize(Roles = "Proprietario,Colaborador")]
         [HttpPut("{idObra}/materiais/{idMaterial}")]
         public async Task<IActionResult> AtualizarQuantidadeMaterial(int idObra, int idMaterial, [FromBody] AtualizarQuantidadeDTO dto)
         {

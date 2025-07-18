@@ -9,5 +9,6 @@ namespace EngenhariaObrasApi.Services.Interfaces
         Task<string?> LoginAsync(UsuarioLoginDTO dto);
         Task<UsuarioDTO?> GetUsuarioLogadoAsync(string email);
         Task<List<UsuarioDTO>> GetAllUsuarios();
+        Task<bool> updateUsuarioById(int id, UsuarioCreateDTO dto);
     }
 }

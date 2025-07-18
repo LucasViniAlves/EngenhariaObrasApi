@@ -7,7 +7,6 @@ using System.Security.Claims;
 namespace EngenhariaObrasApi.Controllers
 {
     [ApiController]
-    [AllowAnonymous]
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
@@ -18,6 +17,7 @@ namespace EngenhariaObrasApi.Controllers
             _usuarioService = usuarioService;
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost("register")]
         public async Task<IActionResult> Register(UsuarioRegisterDTO dto)
         {
@@ -26,14 +26,16 @@ namespace EngenhariaObrasApi.Controllers
             return Ok(new { token });
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> Login(UsuarioLoginDTO dto)
+        public async Task<IActionResult> Login(UsuarioLoginDTO dto) 
         {
             var token = await _usuarioService.LoginAsync(dto);
             if (token == null) return Unauthorized("Credenciais inválidas.");
             return Ok(new { token });
         }
 
+        [AllowAnonymous]
         [HttpGet("usuario")]
         public async Task<ActionResult<UsuarioDTO>> GetUsuario()
         {

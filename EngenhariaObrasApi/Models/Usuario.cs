@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using EngenhariaObrasApi.Models.ENum;
+using EngenhariaObrasApi.Models.Enums;
 
 namespace EngenhariaObrasApi.Models
 {
@@ -17,6 +19,9 @@ namespace EngenhariaObrasApi.Models
 
         [Required]
         public byte[] SenhaSalt { get; set; }
+
+        [Required]
+        public string Perfil { get; set; }
 
     }
 }
