@@ -72,6 +72,9 @@ namespace EngenhariaObrasApi.Services
             var jaExiste = await _context.ObrasMateriais.AnyAsync(om => om.ObraId == idObra && om.MaterialId == idMaterial);
             if (jaExiste) return false;
 
+            if (material.Quantidade < quantidade) return false; // Verifica se há quantidade suficiente
+            material.Quantidade -= quantidade;
+
             var associacao = new ObrasMateriais
             {
                 ObraId = idObra,
